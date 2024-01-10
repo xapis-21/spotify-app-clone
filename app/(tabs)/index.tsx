@@ -24,11 +24,12 @@ const HomePage = () => {
       name: "Dance/Electronic Mix",
     },
     {
-      image: "https://thisis-images.scdn.co/37i9dQZF1DZ06evO3GSvAY-default.jpg",
-      name: "Comfort zone",
+      image:
+        "https://seed-mix-image.spotifycdn.com/v6/img/artist/2tT6SE9nGCYXysoJ4qicsZ/en/default",
+      name: "BASECAMP Mix",
     },
     {
-      image: "https://thisis-images.scdn.co/37i9dQZF1DZ06evO3GSvAY-default.jpg",
+      image: "https://i.scdn.co/image/ab67706f000000028b52561781a94031ffd58371",
       name: "Viral African Hits",
     },
     {
@@ -44,9 +45,9 @@ const HomePage = () => {
   ];
   return (
     <SafeAreaView className="flex-1 bg-app-dark">
-      <ScrollView className='px-2'>
+      <ScrollView className='px-4'>
         {/* Recently played */}
-        <View className='flex flex-wrap h-[330px]'>
+        <View className='flex flex-wrap h-[260px]'>
 
           {recentplaylists?.map(({name,image})=>(
               <RecentlyPlayedTab name={name} image={image}/>
