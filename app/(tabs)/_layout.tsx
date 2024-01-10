@@ -1,55 +1,77 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
+import { View, Text, Pressable, Image, FlatList } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import { useState } from "react";
+import TabButton from "../../components/TabButton";
 
-import Colors from '../../constants/Colors';
+const TabsLayout = () => {
+  const tabs = ["All", "Music", "Wrapped"];
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const [activeTab, setActiveTab] = useState("All");
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-      }}>
+    <Tabs>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
+          title: "",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="home-filled" size={24} color="black" />
+          ),
+          headerLeft: () => (
+            <View className="px-4 flex flex-row gap-4 items-center">
               <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                <Image
+                  source={{
+                    uri: "https://lh3.googleusercontent.com/a/ACg8ocL_i9JC2KyFiuK3uD7R58-JIYUb_igdYVtV0MXHGKipQ7E=s360-c-no",
+                  }}
+                  className="h-8 w-8 rounded-full"
+                />
+              </Pressable>
+              <FlatList
+                data={tabs}
+                renderItem={({ item }) => (
+                  <TabButton
+                    name={item}
+                    activeTab={activeTab}
+                    onHandlePress={() => setActiveTab(item)}
                   />
                 )}
-              </Pressable>
-            </Link>
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(item) => item}
+                contentContainerStyle={{ columnGap: 8 }}
+              />
+            </View>
+          ),
+
+          headerStyle: {
+            backgroundColor: "#0F0F0F",
+          },
+
+          headerShadowVisible: false
+        }}
+      />
+      <Tabs.Screen
+        name="search/index"
+        options={{
+          title: "Search",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="search" size={24} color="black" />
           ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="library/index"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Library",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="my-library-music" size={24} color="black" />
+          ),
         }}
       />
     </Tabs>
   );
-}
+};
+
+export default TabsLayout;
