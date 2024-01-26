@@ -1,9 +1,15 @@
-import { View, Text,Pressable, SafeAreaView, ScrollView } from 'react-native'
-import React from 'react'
-import { router } from 'expo-router';
-import RecentlyPlayedTab from '../../components/RecentlyPlayedTab';
+import { View, Text, Pressable, SafeAreaView, ScrollView, FlatList } from "react-native";
+import React from "react";
+import { router } from "expo-router";
+import useFetch from "../../hooks";
+import RecentlyPlayedTab from "../../components/RecentlyPlayedTab";
+import Playlists from "../../components/Playlists";
+
 
 const HomePage = () => {
+
+   const { data, isLoading, error } = useFetch("home", {});
+
   const recentplaylists = [
     {
       image: "https://thisis-images.scdn.co/37i9dQZF1DZ06evO3GSvAY-default.jpg",
@@ -45,18 +51,32 @@ const HomePage = () => {
   ];
   return (
     <SafeAreaView className="flex-1 bg-app-dark">
-      <ScrollView className='px-4'>
+      <ScrollView className="px-4">
         {/* Recently played */}
-        <View className='flex flex-wrap h-[260px]'>
-
-          {recentplaylists?.map(({name,image})=>(
-              <RecentlyPlayedTab name={name} image={image}/>
+        <View className="flex flex-wrap h-[260px]">
+          {recentplaylists?.map(({ name, image }) => (
+            <RecentlyPlayedTab name={name} image={image} />
           ))}
         </View>
-        
+
+        <View>
+          <FlatList
+            data={data?.genres.filter((d,idx)=>idx<3)}
+            renderItem={({ item }) => (
+              <Playlists
+                data={item.contents.items}
+                title={item.name}
+              />
+            )}
+          
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ columnGap: 20 }}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
-export default HomePage
+export default HomePage;
